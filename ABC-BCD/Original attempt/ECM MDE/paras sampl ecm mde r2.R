@@ -14,7 +14,7 @@ library(readr)
 # Source functions.
 source("Automatic.R")
 
-# Set the directory to store the results.
+# Optional line: set the directory to store the results in .rds files. 
 save.sims.dir <- "BCD_results_ecm_mde_r2"
 save.sims <- TRUE
 
@@ -38,6 +38,7 @@ tic()
 ests <- foreach (i = 1:n.sims, .combine = rbind) %dopar% {
   bcd.temp <- bcd(paras = paras.ecm.mde.r2[i,], paras.ind = "ecm_mde")
   
+  # Optional line: write the results into .rds files. 
   readr::write_rds(bcd.temp, 
                    path = paste0("./", save.sims.dir, "/Round_2_paras", i, "_res.rds"))
   
