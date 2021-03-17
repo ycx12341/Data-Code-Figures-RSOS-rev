@@ -1,0 +1,57 @@
+rm(list = ls())
+library(doParallel)
+library(doRNG)
+library(tictoc)
+library(readr)
+
+source("Automatic.R")
+
+save.sims.dir <- "BCD_results_all3_r5"
+save.sims <- TRUE
+
+if(save.sims) {
+  if(!dir.exists(save.sims.dir)) dir.create(save.sims.dir)
+}
+
+paras.all3.r5 <- as.matrix(read.table("Round 5 parameters 10000 all 3.txt", sep = "",
+                                      header = TRUE))
+
+n.thread <- detectCores() - 1
+n.sims <- 10000
+cl <- makeCluster(n.thread)
+registerDoParallel(cl)
+
+tic()
+ests <- foreach (i = 1:n.sims, .combine = rbind) %dopar% {
+  bcd.temp <- bcd(paras = paras.all3.r5[i,], paras.ind = "all_three")
+  
+  readr::write_rds(bcd.temp,
+                   path = paste0("./", save.sims.dir, "/Round_5_paras", i, "_res.rds"))
+  
+  c(i, bcd.temp)
+}
+toc()
+
+stopCluster(cl)
+
+# 965.31 sec elapsed. 
+
+write.table(ests, "bcd_all3_r5.txt")
+
+bcd.all3.r5 <- unname(ests)
+ind.nan.all3.r5 <- which(is.na(bcd.all3.r5[,2]))
+bcd.all3.r5.valid <- bcd.all3.r5[-ind.nan.all3.r5,]
+mean(bcd.all3.r5.valid[,2]) # 0.07836155
+min(bcd.all3.r5.valid[,2]) # 0.02636593
+
+(4.217856 - 0.07836155)/4.217856 * 100
+# 98.14215
+
+# Averaged BC distance has been reduced by 98.14%, stopping criteria has 
+# been met!
+
+paras.final.est <- apply(paras.all3.r5, 2, mean)
+# 0.010327233 0.055685462 9.784727353 0.009859462 0.100444870 5.598774875 
+paras.ref <- c(0.01, 0.05, 10, 0.01, 0.1, 5)
+(paras.final.est - paras.ref)/paras.ref*100
+# 3.2723297 11.3709240 -2.1527265 -1.4053819  0.4448701 11.9754975 
