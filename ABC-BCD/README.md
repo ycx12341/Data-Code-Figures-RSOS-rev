@@ -4,26 +4,10 @@ This folder contains all the essential code and results regarding the ABC approa
 
 Folder **Original attempt** contains all the results of the first attempt on the main reference dataset.
 
-Folder **Extra attempt 1** and **Extra attempt 2** contains all the results of the two extra attempts on the main reference dataset. 
+Folder **Extra attempt 1** and **Extra attempt 2** contain all the results of the two extra attempts on the main reference dataset. 
 
-Folder **Consistency **
+Folder **Consistency analysis** contains the MC errors obtained based on the final parameter estimates of the three different attempts on the main reference dataset. 
 
-File **PDE_GradientMatching_FixPar** and **PDE_GradientMatching_Functions_FixPar** are used to produce parameter estimates at different CVs with certain parameter values constrained. 
+Folder **Different paras set 1** and **Different paras set 2** contain all the results on the two different reference datasets. 
 
-File **PDE_GradientMatching_PostProcess** is used to process all the collected data and obtain the final results presented in the paper. 
-
-File **Convergence check of optimizations** checks the convergence of optimizations performed to obtain the original results, in order to ensure the parameter estimates are obtained after the convergence in **optim** is reached. 
-
-File **Plot_patterns** is used to plot the invasion pattern based on parameter values chosen. 
- 
-Folder **Gradient plots** contains all the plots of averaged and explicit spatial/temporal gradients involved in the PDE system studied in the manuscript.
-
-Folder **Possible solutions to improve accuracy** contains all the code and results that aim to improve the accuracy of parameter estimates.
-
-Folder **Results without measurement errors** contains the reference gradients predicted by GAM in the gradient matching scheme with no measurement errors added to the data and the true gradients calculated by the finite difference scheme. 
- 
-Folder **Sensitivity tests results** contains all the results of the three sensitivity tests mentioned in the manuscript. 
-
-Folder **SimRes_ests** and **SimRes_ests_converge_check** contains the original results and the updated results with convergence being checked.
-
-All simulation results were generated using R 3.5.3 “Great Truth”.
+All simulation results were generated using R 4.0.3 "Bunny-Wunnies Freak Out"
