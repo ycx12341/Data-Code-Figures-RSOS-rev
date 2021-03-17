@@ -8,6 +8,8 @@ Folder **ECM MDE** contains all the results of the evaluations on the ECM + MDE 
 
 Folder **TC ECM MDE** contains all the results of the evaluations on all the three density profiles.
 
+Folder **Images in the manuscript** contains all the images presented in the main article and the supplementary material of the manuscript. 
+
 File **mean_var_obs.txt** contains the reference summary statistics. 
 
 File **mean_var_ref.m** generates the reference summary statistics and store them in the txt file above. 
