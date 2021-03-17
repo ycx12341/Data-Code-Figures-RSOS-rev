@@ -11,3 +11,5 @@ Folder **TC ECM MDE** contains all the results of the evaluations on all the thr
 File **mean_var_obs.txt** contains the reference summary statistics. 
 
 File **mean_var_ref** generates the reference summary statistics and store them in the txt file above. 
+
+Folder **Extra attempt 1**, **Extra attempt 2**, **Different paras set 1**, **Different paras set 2** have similar structures to this folder.. 
