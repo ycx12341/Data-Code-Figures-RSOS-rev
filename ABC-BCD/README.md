@@ -2,7 +2,11 @@
 
 This folder contains all the essential code and results regarding the ABC approach presented in Xiao et al. 
 
-File **PDE_GradientMatching_Main** and **PDE_GradientMatching_Functions** are used to produce parameter estimates at different CVs. 
+Folder **Original attempt** contains all the results of the first attempt on the main reference dataset.
+
+Folder **Extra attempt 1** and **Extra attempt 2** contains all the results of the two extra attempts on the main reference dataset. 
+
+Folder **Consistency **
 
 File **PDE_GradientMatching_FixPar** and **PDE_GradientMatching_Functions_FixPar** are used to produce parameter estimates at different CVs with certain parameter values constrained. 
 
