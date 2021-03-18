@@ -16,7 +16,7 @@ if(save.sims) {
 paras.ecm.r3 <- as.matrix(read.table("Round 3 parameters 10000 ecm.txt", 
                            sep = "", header = TRUE))
 
-set.seed(121)
+set.seed(874512)
 dn<-runif(10000,0.000069,0.02)
 gamma<-runif(10000,0.005,0.26)
 eta<-paras.ecm.r3[,3]
@@ -47,15 +47,15 @@ ests <- foreach (i = 1:n.sims, .combine = rbind) %dopar% {
 toc()
 
 stopCluster(cl)
-# 1097.87 sec elapsed.
+# 957.45 sec elapsed.
 
 write.table(ests, "bcd_ecm_mde_r1.txt")
 
 bcd.ecm.mde.r1 <- unname(ests)
 ind.nan.ecm.mde.r1 <- which(is.na(bcd.ecm.mde.r1[,2]))
 bcd.ecm.mde.r1.valid <- bcd.ecm.mde.r1[-ind.nan.ecm.mde.r1,]
-mean(bcd.ecm.mde.r1.valid[,2]) # 6.559468
-min(bcd.ecm.mde.r1.valid[,2]) # 0.03013569
+mean(bcd.ecm.mde.r1.valid[,2]) # 6.57457
+min(bcd.ecm.mde.r1.valid[,2]) # 0.01692129
 
 paras.ecm.mde.r2 <- abc.bcd(ss.mat = bcd.ecm.mde.r1, paras = paras.ecm.mde.r1, bw = 0.5)
 write.table(paras.ecm.mde.r2, "Round 2 parameters 10000 ecm_mde.txt")

@@ -1,22 +1,6 @@
-# Automatic.R
-# Author: Yunchen Xiao
-# This .R file contains the necessary functions to implement the ABC scheme 
-# proposed in Xiao et al. 
-
 bcd <- function(paras, paras.ind) {
-  # A function that calculates the Bhattacharrya distance between the 
-  # simulations of the parameter vectors in the current parameter set and the
-  # simulation of the reference parameter values. 
-  
-  # Inupt: 
-  # para - the parameter set to be evaluated; 
-  # paras.ind - indicator of the time series being considered. 
-  
-  # Output: the Bhattacharyya distances of the parameter vectors in the 
-  # parameter set being investigated. 
-  
   paras <- unname(paras)
-  # Observed summary statistics
+  # Mean_var_obsed table
   mean.var.obs <- unname(as.matrix(read.table("mean_var_obs.txt",sep="")))
   
   # Space
@@ -80,7 +64,7 @@ bcd <- function(paras, paras.ind) {
         gamma * n[2:(length(x11)-1)] * (f[1:(length(x11)-2)] + f[3:length(x11)] - 2 * f[2:(length(x11)-1)]) * dt / (h ^ 2) + 
         r * (1 - f[2:(length(x11)-1)] - n[2:(length(x11)-1)]) * n[2:(length(x11)-1)] * dt + n[2:(length(x11)-1)]
       
-      # No flux boundary condition
+      #No flux boundary condition
       n[1] <- n[2]
       n[n.x11] <- n[n.x11 - 1]
       
@@ -98,7 +82,7 @@ bcd <- function(paras, paras.ind) {
       p <- p + 1
     }
     
-    # Rearrange the means and variances
+    
     res.arr <- matrix(0,nrow = 30, ncol = 80)
     
     tc.ind <- seq(1,28, by = 3)
@@ -124,9 +108,6 @@ bcd <- function(paras, paras.ind) {
     
     bcd.vec <- vector();
     
-    # Only the density profiles being evaluated currently are taken into 
-    # account when calculating the Bhattacharyya distances.
-    
     if (paras.ind == "ecm") {
       for (j in 81:160) {
         bcd <- 0.25*log(0.25*((mean.var[j,2]/mean.var.obs[j,2])+(mean.var.obs[j,2]/mean.var[j,2])+2))+0.25*(((mean.var[j,1]-mean.var.obs[j,1])^2)/(mean.var.obs[j,2]+mean.var[j,2]))
@@ -148,7 +129,8 @@ bcd <- function(paras, paras.ind) {
 
     
     inv.index <- which(bcd.vec == "Inf")
-    
+    #inv_term <- length(inv_index)
+
     bcd.vec.2 <- bcd.vec
     bcd.vec.2[inv.index] <- 0
     
@@ -158,72 +140,72 @@ bcd <- function(paras, paras.ind) {
 }
 
 abc.bcd <- function(ss.mat, paras, bw) {
-  # A function that reads in the parameters being evaluated in the current round
-  # and resamples the parameters to be evaluated in the next round. 
   
-  # Input: 
-  # ss.mat - matrix of summary statistics; 
-  # paras - parameters being evaluated in the current round;
-  # bw - bandwidth of weight calculations.
-  
-  # Set seed, make sure the same inputs produce the same results.
   set.seed(123)
   RNGkind(sample.kind = "Rejection")
   ss.mat <- unname(as.matrix(ss.mat))
   paras <- unname(as.matrix(paras))
   
-  # Lower and upper bounds of the parameters.
   paras.lb <- c(0.000069, 0.005, 7, 0.0001, 0.07, 3.5)
   paras.ub <- c(0.02, 0.25, 18, 0.033, 0.18, 9)
+  # Set the Bhattacharya distance array to be a matrix instead of a data frame.
   
-  # Locate the invalid terms. 
   invalid<-vector()
   
   for (j in 1:length(ss.mat[1,])) {
     invalid.sep <- which(is.na(ss.mat[,j]) == TRUE)
     invalid <- c(invalid,invalid.sep)
-  }
+  } # The invalid terms. 
   
-  # Uniqueness checking, make sure each term only appears once.
-  invalid.index <- unique(invalid) 
+  invalid.index <- unique(invalid) # Uniqueness checking, 
+  # make sure each term only appears once.
   
-  # Valid Bhattacharyya distance results.
   if(length(invalid.index) == 0) {
     ss.mat.valid <- ss.mat
   } else {
-    ss.mat.valid <- ss.mat[-invalid.index,]
+    ss.mat.valid <- ss.mat[-invalid.index,] ## Valid Bhattacharya distance results.
   }
   
-  # Weights of the valid B-C distance results.
-  wt <- (ss.mat.valid[,length(ss.mat.valid[1,])]^(-bw))  
+  #den.func <- density(paras[,3], adjust = 2)
+  #paras.den <- rep(0, length(paras[,3]))
   
-  # Valid B-C results + Weight.
-  ss.mat.valid.wt <- cbind(ss.mat.valid,wt) 
+  #for (i in 1:length(paras[,3])) {
+  #  ind.temp <- which(abs(den.func$x - paras[i,3]) == min(abs(den.func$x - paras[i,3])))
+  #  paras.den[i] <- den.func$y[ind.temp]
+  #}
   
-  # Resample probabilities.
+  wt <- (ss.mat.valid[,length(ss.mat.valid[1,])]^(-bw)) #* paras.den[ss.mat.valid[,1]] # Weights of the valid B-C distance results.
+  
+  ss.mat.valid.wt <- cbind(ss.mat.valid,wt) # Valid B-C results + Weight
+  
   resamp.prob <- wt/sum(wt)
   
-  # Valid B-C results + Weights + Resampling probabilities.
-  ss.mat.valid.wt.prob <- cbind(ss.mat.valid.wt,resamp.prob)
+  #resamp_prob <- rep(0,length(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])])) # Create an empty vector to store the resampling probabilities
   
-  # Resample the indices.
+  #for (i in 1:length(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])])) {
+  #  if (ss_mat_valid_wt[i,length(ss_mat_valid_wt[1,])] == min(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])])) {
+  #    resamp_prob[i] <- 0
+  #  } else if (ss_mat_valid_wt[i,length(ss_mat_valid_wt[1,])] == max(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])])) {
+  #    resamp_prob[i] <- 1
+  #  } else {
+  #    resamp_prob[i] <- (ss_mat_valid_wt[i,length(ss_mat_valid_wt[1,])]-min(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])]))/(max(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])])-min(ss_mat_valid_wt[,length(ss_mat_valid_wt[1,])]))
+  #  }
+  #} # Calculation of the resampling probabilities, see the manuscript for more details.
+  
+  ss.mat.valid.wt.prob <- cbind(ss.mat.valid.wt,resamp.prob) # Valid B-C results + Weight + Resampling probabilities.
+  
   resamp.ind <- sample(ss.mat.valid[,1], size = length(paras[,1]), 
-                       replace = TRUE, prob = resamp.prob)  
+                       replace = TRUE, prob = resamp.prob) # Resample the indices. 
   
-  # Resampled parameter vectors, without perturbation.
-  paras.nr.unperturbed <- paras[resamp.ind,] 
+  paras.nr.unperturbed <- paras[resamp.ind,] # Resampled parameter vectors, without perturbation.
   
-  # An empty matrix used to store the perturbed parameter values.
-  paras.nr.perturbed <- matrix(0,nrow = nrow(paras),ncol = ncol(paras)) 
+  paras.nr.perturbed <- matrix(0,nrow = nrow(paras),ncol = ncol(paras)) # An empty matrix used to store the perturbed parameter values.
   
-  # Perturbed parameter values.
   for (i in 1:length(paras.nr.unperturbed[1,])) {
     for (j in 1:length(paras.nr.unperturbed[,1])){
       h <- sqrt(1-0.05^2)
       paras.nr.perturbed[j,i] <- rnorm(1, h * paras.nr.unperturbed[j,i] + (1-h) * mean(paras.nr.unperturbed[,i]),
                                        0.05*sd(paras.nr.unperturbed[,i]))
-      # Make sure the parameter values do not go beyond the boundaries of the 
-      # initial distributions.
       while ((paras.nr.perturbed[j,i] > paras.ub[i]) || (paras.lb[i] > paras.nr.perturbed[j,i])) {
         paras.nr.perturbed[j,i] <- rnorm(1, h * paras.nr.unperturbed[j,i] + (1-h) * mean(paras.nr.unperturbed[,i]),
                                          0.05*sd(paras.nr.unperturbed[,i]))

@@ -34,16 +34,14 @@ toc()
 
 stopCluster(cl)
 
-# 1103.25 sec elapsed.
+# 1046.98 sec elapsed.
 
 write.table(ests, "bcd_ecm_r3.txt")
 
 bcd.ecm.r3 <- unname(ests)
 ind.nan.ecm.r3 <- which(is.na(bcd.ecm.r3[,2]))
 bcd.ecm.r3.valid <- bcd.ecm.r3[-ind.nan.ecm.r3,]
-mean(bcd.ecm.r3.valid[,2]) # 0.3386046
-min(bcd.ecm.r3.valid[,2]) # 0.007639883
+mean(bcd.ecm.r3.valid[,2]) # 0.3284968
+min(bcd.ecm.r3.valid[,2]) # 0.007370843
 
-(4.338274 - 0.3386046)/4.338274*100
-# Stopping criteria has been met!
 

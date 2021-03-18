@@ -32,7 +32,7 @@ ests <- foreach (i = 1:n.sims, .combine = rbind) %dopar% {
 }
 toc()
 
-# 1216.95 sec elapsed
+# 1087.83 sec elapsed
 
 stopCluster(cl)
 
@@ -41,10 +41,8 @@ write.table(ests, "bcd_ecm_r3.txt")
 bcd.ecm.r3 <- unname(ests)
 ind.nan.ecm.r3 <- which(is.na(bcd.ecm.r3[,2]))
 bcd.ecm.r3.valid <- bcd.ecm.r3[-ind.nan.ecm.r3,]
-mean(bcd.ecm.r3.valid[,2]) # 0.5188288
-min(bcd.ecm.r3.valid[,2]) # 0.02700857
+mean(bcd.ecm.r3.valid[,2]) # 0.5142917
+min(bcd.ecm.r3.valid[,2]) # 0.02696862
 
-(2.351454 - 0.5188288)/2.351454*100
-# 77.93583
-
-# Stopping criteria has been met!
+paras.ecm.r4 <- abc.bcd(ss.mat = bcd.ecm.r3, paras = paras.ecm.r3, bw = 1.125)
+write.table(paras.ecm.r4, "Round 4 parameters 10000 ecm.txt")

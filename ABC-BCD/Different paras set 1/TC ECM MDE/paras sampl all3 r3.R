@@ -34,15 +34,15 @@ toc()
 
 stopCluster(cl)
 
-# 1139.17 sec elapsed.
+# 966.8 sec elapsed.
 
 write.table(ests, "bcd_all3_r3.txt")
 
 bcd.all3.r3 <- unname(ests)
 ind.nan.all3.r3 <- which(is.na(bcd.all3.r3[,2]))
 bcd.all3.r3.valid <- bcd.all3.r3[-ind.nan.all3.r3,]
-mean(bcd.all3.r3.valid[,2]) # 0.7529091
-min(bcd.all3.r3.valid[,2]) # 0.03438009
+mean(bcd.all3.r3.valid[,2]) # 0.7567677
+min(bcd.all3.r3.valid[,2]) # 0.03003643
 
 paras.all3.r4 <- abc.bcd(ss.mat = bcd.all3.r3, paras = paras.all3.r3, bw = 1.125)
 write.table(paras.all3.r4, "Round 4 parameters 10000 all 3.txt")
