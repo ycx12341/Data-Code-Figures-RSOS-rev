@@ -50,6 +50,15 @@ min(bcd.all3.r4.valid[,2]) # 0.009342805
 # Stoppiing criterion has been reached!
 paras.ref <- c(0.013, 0.15, 11, 0.025, 0.11, 6)
 paras.final <- apply(paras.all3.r4, 2, mean)
+# 0.01312714  0.15600074 11.00474007  0.02551498  0.11001358  6.38453799 
 
 (paras.final- paras.ref) / paras.ref * 100
 # 0.97802714 4.00049248 0.04309156 2.05991111 0.01234512 6.40896650 
+
+# Mean squared errors 
+dn.mse <- mean((paras.all3.r4[,1] - 0.013)^2) # 1.544652e-05
+ga.mse <- mean((paras.all3.r4[,2] - 0.15)^2) # 0.0004796098
+eta.mse <- mean((paras.all3.r4[,3] - 11)^2) # 0.02822932
+dm.mse <- mean((paras.all3.r4[,4] - 0.025)^2) # 1.968235e-06
+al.mse <- mean((paras.all3.r4[,5] - 0.11)^2) # 1.718182e-06
+rn.mse <- mean((paras.all3.r4[,6] - 6)^2) # 1.595071

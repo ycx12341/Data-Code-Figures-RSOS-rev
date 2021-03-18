@@ -53,3 +53,11 @@ paras.final <- apply(paras.all3.r6, 2, mean)
 paras.ref <- c(0.008, 0.08, 13, 0.018, 0.13, 7)
 (paras.final - paras.ref) / paras.ref * 100
 # 1.0111866 -0.5773268 -1.7728213  3.6304548  0.2353558  1.0830527 
+
+# Mean squared errors 
+dn.mse <- mean((paras.all3.r6[,1] - 0.008)^2) # 5.085768e-06
+ga.mse <- mean((paras.all3.r6[,2] - 0.08)^2) # 4.84035e-05
+eta.mse <- mean((paras.all3.r6[,3] - 13)^2) # 0.06876114
+dm.mse <- mean((paras.all3.r6[,4] - 0.018)^2) # 6.861225e-07
+al.mse <- mean((paras.all3.r6[,5] - 0.13)^2) # 8.71638e-07
+rn.mse <- mean((paras.all3.r6[,6] - 7)^2) # 0.1851043
