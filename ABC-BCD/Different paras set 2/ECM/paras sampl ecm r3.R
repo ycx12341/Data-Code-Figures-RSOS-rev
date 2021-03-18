@@ -36,7 +36,7 @@ stopCluster(cl)
 
 # 1103.25 sec elapsed.
 
-write.table(bcd.ecm.r3, "bcd_ecm_r3.txt")
+write.table(ests, "bcd_ecm_r3.txt")
 
 bcd.ecm.r3 <- unname(ests)
 ind.nan.ecm.r3 <- which(is.na(bcd.ecm.r3[,2]))

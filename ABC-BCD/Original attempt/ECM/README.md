@@ -2,7 +2,7 @@
 
 This folder contains all the essential code and results regarding the evaluations on the ECM density profile. 
 
-Files **paras sampl ecm rx.R** read in the parameters to be evaluated in round x, then resample the parameters to be evaluated in the next round.
+Files **paras sampl ecm rx.R** read in the parameters to be evaluated in round x, then resample the parameters to be evaluated in the next round. (In round 1, the parameter values are sampled from the initial distributions.)
 
 File **Automatic.R** contains all the necessary R functions of the ABC scheme.
 
