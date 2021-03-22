@@ -78,14 +78,15 @@ alpha.mse <- mean(((paras.all3.r5[,1] - 0.1)^2)) # 0.0080721527
 rn.mse <- mean(((paras.all3.r5[,6] - 5)^2))      # 0.8537346387
 
 # Pairwise heatmap
-colnames(paras.all3.r5) <- c("dn", "gamma", "eta", "dm", "alpha", "rn")
+colnames(paras.all3.r5)[1] <- expression("{*d[n]*}")
+colnames(paras.all3.r5) <- c("d\\textsubscript{n}", "gamma", "eta", "dm", "alpha", "rn")
 cormat.paras.final <- cor(paras.all3.r5)
 cormat.paras.final[lower.tri(cormat.paras.final)] <- NA
 melted.cormat <- melt(cormat.paras.final, na.rm = TRUE)
 colnames(melted.cormat) <- c("Paras1", "Paras2", "value")
 
 library(ggplot2)
-ggplot(data = melted.cormat, aes(Paras1, Paras2, fill = value)) +
+pw.heatmap <- ggplot(data = melted.cormat, aes(Paras1, Paras2, fill = value)) +
   geom_tile(color = "white")+
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
                        midpoint = 0, limit = c(-1,1), space = "Lab", 
@@ -94,3 +95,8 @@ ggplot(data = melted.cormat, aes(Paras1, Paras2, fill = value)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 12, hjust = 1))+
   coord_fixed()
+
+print(pw.heatmap)
+
+pw.heatmap + 
+  geom_text(aes(Paras1, Paras2, label = round(value,2)), color = "black", size = 7)
