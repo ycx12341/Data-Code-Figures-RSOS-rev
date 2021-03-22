@@ -1,7 +1,7 @@
 # paras sampl ecm r4.R
 # Author: Yunchen Xiao
 # This .R file reads in the parameters used in round 4 of the evaluations of the 
-# ECM density profile and check if the stopping criterion (75% reduction in the 
+# ECM density profile and check if the stopping criterion (80% reduction in the 
 # mean summary statistics of the initial parameters) has been met.  
 
 # Clear the current workspace and load the necessary packages.
