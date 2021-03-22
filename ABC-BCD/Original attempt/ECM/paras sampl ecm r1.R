@@ -64,7 +64,7 @@ stopCluster(cl)
 write.table(ests, "bcd_ecm_r1.txt")
 
 # Calculate and record the average summary statistics of the initial parameters,
-# when this value is reduced by 75%, we move on to the evaluations of ECM+MDE
+# when this value is reduced by 80%, we move on to the evaluations of ECM+MDE
 # density profiles.
 
 bcd.ecm.r1 <- unname(ests)
