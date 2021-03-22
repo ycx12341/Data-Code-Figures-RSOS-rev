@@ -53,7 +53,7 @@ stopCluster(cl)
 write.table(ests, "bcd_ecm_r4.txt")
 
 # Calculate and record the average summary statistics of the parameters being 
-# investigated in the current round, the stopping criterion (75% reduction in 
+# investigated in the current round, the stopping criterion (80% reduction in 
 # the mean summary statistics of the initial parameters) has been met! We 
 # record the values of $\eta$ and proceed to the evaluations of the ECM + MDE
 # density profiles. 
