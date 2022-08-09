@@ -12,6 +12,7 @@ library(tictoc)
 library(readr)
 library(reshape2)
 library(ggplot2)
+library(latex2exp)
 
 # Source functions.
 source("Automatic.R")
@@ -78,15 +79,16 @@ alpha.mse <- mean(((paras.all3.r5[,1] - 0.1)^2)) # 0.0080721527
 rn.mse <- mean(((paras.all3.r5[,6] - 5)^2))      # 0.8537346387
 
 # Pairwise heatmap
-colnames(paras.all3.r5)[1] <- expression("{*d[n]*}")
-colnames(paras.all3.r5) <- c("d\\textsubscript{n}", "gamma", "eta", "dm", "alpha", "rn")
+greek.letters <- c(alpha='\u03b1', gamma='\u03b3', eta = '\u03b7')
+colnames(paras.all3.r5) <- paste0(c("dn", greek.letters['gamma'], greek.letters['eta'],
+                                    "dm", greek.letters['alpha'], "rn" ))
 cormat.paras.final <- cor(paras.all3.r5)
 cormat.paras.final[lower.tri(cormat.paras.final)] <- NA
 melted.cormat <- melt(cormat.paras.final, na.rm = TRUE)
-colnames(melted.cormat) <- c("Paras1", "Paras2", "value")
+colnames(melted.cormat) <- c("Parameter", "Parameters", "value")
 
 library(ggplot2)
-pw.heatmap <- ggplot(data = melted.cormat, aes(Paras1, Paras2, fill = value)) +
+pw.heatmap <- ggplot(data = melted.cormat, aes(Parameter, Parameters, fill = value)) +
   geom_tile(color = "white")+
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
                        midpoint = 0, limit = c(-1,1), space = "Lab", 
@@ -99,4 +101,4 @@ pw.heatmap <- ggplot(data = melted.cormat, aes(Paras1, Paras2, fill = value)) +
 print(pw.heatmap)
 
 pw.heatmap + 
-  geom_text(aes(Paras1, Paras2, label = round(value,2)), color = "black", size = 7)
+  geom_text(aes(Parameter, Parameters, label = round(value,2)), color = "black", size = 7)
